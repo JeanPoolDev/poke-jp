@@ -1,16 +1,25 @@
 ---
+import CardPoke from "../components/CardPoke.astro";
+import MainLayout from "../components/MainLayout.astro";
+import type {PokeListResponse} from "../interfaces/poke-response"
+
+const resp = await fetch('https://pokeapi.co/api/v2/pokemon');
+const data = await (resp.json()) as PokeListResponse;
+
+const { results } = data
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title="Home || PokeJp">
+  <h1 class="text-4xl font-bold">Poke-Jp</h1>
+  <hr>
+  <div 
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 
+    lg:grid-cols-4 gap-4 my-5">
+    {
+      results.map(pokemon => (
+        <CardPoke {...pokemon}/>
+      ))
+    }
+  </div>
+</MainLayout>
